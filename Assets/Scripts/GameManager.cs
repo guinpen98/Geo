@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Net;
+using static System.Net.WebRequestMethods;
 
 public class GameManager : MonoBehaviour
 {
@@ -82,11 +83,16 @@ public class GameManager : MonoBehaviour
         label.text = string.Format("w:{0:f6}\nh:{1:f6}", lat, lng);
 
         // URLを生成
-        var url = $"https://a.tile.openstreetmap.org/1/{lat}/{lng}.png";
+        //var url = $"https://staticmap.openstreetmap.de";
+        //url += string.Format("?center={0},{1}", lat, lng);
+        //url += "&zoom=14&size=400x300&scale=2&maptype=roadmap&sensor=true";
+        //url += string.Format("&markers={0},{1}", lat, lng);
+        //var url = "http://staticmap.openstreetmap.de?center=40.714728,-73.998672&zoom=14&size=865x512&maptype=mapnik";
+        var url = "http://a.tile.openstreetmap.org/2/2/2.png";
         Debug.Log(url);
 
         //API
-        UnityWebRequest www = UnityWebRequest.Get(url);
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
         //urlに接続してデータが帰ってくるまで待機状態にする。
         yield return www.SendWebRequest();
         //エラー確認
