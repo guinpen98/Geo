@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     private LocationService GPS;
     private float lat, lng;
+    private int zoom = 19;
 
     void Start()
     {
@@ -77,6 +78,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    int LonToX()
+    {
+        float lon = lng;
+        if (-180 > lon && lon > 180)
+        {
+            lon = (lon + 180) % 360 - 180;
+        }
+        return (int)(((lon + 180) / 360) * Math.Pow(2, zoom));
+    }
+
+    int LatToY()
+    {
+        float lat = this.lat;
+        if (-90 > lat && lat > 90)
+        {
+            lat = (lat + 90) % 180 - 90;
+        }
+        return (int)((1 - Math.Log(Math.Tan(lat * Math.PI / 180) + 1 / Math.Cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.Pow(2, zoom));
+    }
+
     //地図を取得するメソッド
     IEnumerator GetMapImage()
     {
@@ -88,7 +109,8 @@ public class GameManager : MonoBehaviour
         //url += "&zoom=14&size=400x300&scale=2&maptype=roadmap&sensor=true";
         //url += string.Format("&markers={0},{1}", lat, lng);
         //var url = "http://staticmap.openstreetmap.de?center=40.714728,-73.998672&zoom=14&size=865x512&maptype=mapnik";
-        var url = "http://a.tile.openstreetmap.org/2/2/2.png";
+        var url = $"http://a.tile.openstreetmap.org/{zoom}/{LonToX()}/{LatToY()}.png";
+        //var url = $"https://cyberjapandata.gsi.go.jp/xyz/std/{zoom}/{LonToX()}/{LatToY()}.png";
         Debug.Log(url);
 
         //API
