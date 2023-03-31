@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         {
             lon = (lon + 180) % 360 - 180;
         }
-        return (int)(((lon + 180) / 360) * Math.Pow(2, zoom));
+        return (int)Math.Floor(((lon + 180) / 360) * Math.Pow(2, zoom));
     }
 
     int LatToY()
@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
         {
             lat = (lat + 90) % 180 - 90;
         }
-        return (int)((1 - Math.Log(Math.Tan(lat * Math.PI / 180) + 1 / Math.Cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.Pow(2, zoom));
+        return (int)Math.Floor((1 - Math.Log(Math.Tan(lat * Math.PI / 180) + 1 / Math.Cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.Pow(2, zoom));
     }
 
     //地図を取得するメソッド
